@@ -3346,7 +3346,7 @@ void CBasePlayer::JoiningThink()
 				AddAccount(startmoney.value);
 			}
 
-			if (mp->FPlayerCanRespawn(this))
+			if (1)
 			{
 				Spawn();
 

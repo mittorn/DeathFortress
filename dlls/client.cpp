@@ -967,7 +967,7 @@ void HandleMenu_ChooseAppearance(CBasePlayer *player, int slot)
 			else
 			{
 				appearance.model_id = MODEL_TERROR;
-				appearance.model_name = "terror";
+				appearance.model_name = "rhino";
 			}
 			break;
 		}
@@ -988,22 +988,22 @@ void HandleMenu_ChooseAppearance(CBasePlayer *player, int slot)
 		case 1:
 			appearance.model_id = MODEL_URBAN;
 			player->m_iClass = CLASS_RHINO;
-			appearance.model_name = "urban";
+			appearance.model_name = "rhino";
 			break;
 		case 2:
 			appearance.model_id = MODEL_GSG9;
 			player->m_iClass = CLASS_COMMANDER;
-			appearance.model_name = "gsg9";
+			appearance.model_name = "commander";
 			break;
 		case 3:
 			appearance.model_id = MODEL_SAS;
 			player->m_iClass = CLASS_DESTROYER;
-			appearance.model_name = "sas";
+			appearance.model_name = "destroyer";
 			break;
 		case 4:
 			appearance.model_id = MODEL_GIGN;
 			player->m_iClass = CLASS_VAMPIRE;
-			appearance.model_name = "gign";
+			appearance.model_name = "vampire";
 			break;
 		default:
 			if (TheBotProfiles->GetCustomSkinModelname(slot) && player->IsBot())
@@ -1013,7 +1013,7 @@ void HandleMenu_ChooseAppearance(CBasePlayer *player, int slot)
 			else
 			{
 				appearance.model_id = MODEL_URBAN;
-				appearance.model_name = "urban";
+				appearance.model_name = "rhino";
 			}
 			break;
 		}
@@ -1023,7 +1023,7 @@ void HandleMenu_ChooseAppearance(CBasePlayer *player, int slot)
 	}
 
 	player->m_iMenu = Menu_OFF;
-
+	player->m_iJoiningState = GETINTOGAME;
 	// Reset the player's state
 	if (player->m_iJoiningState == JOINED)
 	{
@@ -1041,6 +1041,7 @@ void HandleMenu_ChooseAppearance(CBasePlayer *player, int slot)
 			}
 		}
 	}
+	player->JoiningThink();
 
 	player->pev->body = 0;
 	player->m_iModelName = appearance.model_id;
@@ -1306,14 +1307,14 @@ BOOL HandleMenu_ChooseTeam(CBasePlayer *player, int slot)
 	}
 
 	// If we already died and changed teams once, deny
-	if (player->m_bTeamChanged)
+	/*if (player->m_bTeamChanged)
 	{
 		if (player->pev->deadflag != DEAD_NO)
 		{
 			ClientPrint(player->pev, HUD_PRINTCENTER, "#Only_1_Team_Change");
 			return FALSE;
 		}
-	}
+	}*/
 
 	if (player->m_iTeam == SPECTATOR && team != SPECTATOR)
 	{
@@ -1342,6 +1343,7 @@ BOOL HandleMenu_ChooseTeam(CBasePlayer *player, int slot)
 		player->has_disconnected = false;
 
 		player->m_iJoiningState = GETINTOGAME;
+		player->JoiningThink();
 
 		SendItemStatus(player);
 		SET_CLIENT_MAXSPEED(ENT(player->pev), 1);
@@ -2100,8 +2102,8 @@ void EXT_FUNC ClientCommand(edict_t *pEntity)
 		{
 			if (player->pev->deadflag != DEAD_NO)
 			{
-				ClientPrint(player->pev, HUD_PRINTCENTER, "#Only_1_Team_Change");
-				return;
+				//ClientPrint(player->pev, HUD_PRINTCENTER, "#Only_1_Team_Change");
+				//return;
 			}
 		}
 

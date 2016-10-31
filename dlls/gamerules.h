@@ -421,7 +421,7 @@ public:
 	bool ShouldSkipSpawn() const { return m_bSkipSpawn; }
 	void MarkSpawnSkipped() { m_bSkipSpawn = false; }
 	NOXREF void PlayerJoinedTeam(CBasePlayer *pPlayer) { }
-	float TimeRemaining() { return m_iRoundTimeSecs - gpGlobals->time + m_fRoundCount; }
+	float TimeRemaining() { return 100500; /*m_iRoundTimeSecs - gpGlobals->time + m_fRoundCount;*/ }
 	BOOL TeamFull(int team_id);
 	BOOL TeamStacked(int newTeam_id, int curTeam_id);
 	bool IsVIPQueueEmpty();

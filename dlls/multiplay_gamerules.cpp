@@ -329,8 +329,8 @@ void EndRoundMessage(const char *sentence, int event)
 void ReadMultiplayCvars(CHalfLifeMultiplay *mp)
 {
 	mp->m_iRoundTime = 100500; //(int)(CVAR_GET_FLOAT("mp_roundtime") * 60);
-	mp->m_iC4Timer = (int)CVAR_GET_FLOAT("mp_c4timer");
-	mp->m_iIntroRoundTime = (int)CVAR_GET_FLOAT("mp_freezetime");
+	mp->m_iC4Timer = 100500;//(int)CVAR_GET_FLOAT("mp_c4timer");
+	mp->m_iIntroRoundTime = 100500;//(int)CVAR_GET_FLOAT("mp_freezetime");
 	mp->m_iLimitTeams = (int)CVAR_GET_FLOAT("mp_limitteams");
 
 
