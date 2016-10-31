@@ -1201,10 +1201,10 @@ BOOL HandleMenu_ChooseTeam(CBasePlayer *player, int slot)
 			// Reset money
 			player->m_iAccount = 0;
 
-			MESSAGE_BEGIN(MSG_ONE, gmsgMoney, NULL, player->pev);
+			/*MESSAGE_BEGIN(MSG_ONE, gmsgMoney, NULL, player->pev);
 				WRITE_LONG(player->m_iAccount);
 				WRITE_BYTE(0);
-			MESSAGE_END();
+			MESSAGE_END();*/
 
 			MESSAGE_BEGIN(MSG_BROADCAST, gmsgScoreInfo);
 				WRITE_BYTE(ENTINDEX(player->edict()));

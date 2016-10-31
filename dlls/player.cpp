@@ -2166,6 +2166,11 @@ void CBasePlayer::Killed(entvars_t *pevAttacker, int iGib)
 		WRITE_BYTE(m_iClientHealth);
 	MESSAGE_END();
 
+	MESSAGE_BEGIN(MSG_ONE, gmsgMoney, NULL, pev);
+				WRITE_LONG(m_iClientHealth);
+				WRITE_BYTE(0);
+			MESSAGE_END();
+
 	MESSAGE_BEGIN(MSG_ONE, gmsgCurWeapon, NULL, pev);
 		WRITE_BYTE(0);
 		WRITE_BYTE(0xFF);
@@ -3120,6 +3125,7 @@ NOXREF void CBasePlayer::ThrowPrimary()
 
 void CBasePlayer::AddAccount(int amount, bool bTrackChange)
 {
+	return;
 	m_iAccount += amount;
    
 	if (m_iAccount < 0)
@@ -3159,6 +3165,8 @@ void CBasePlayer::SyncRoundTimer()
 
 	if (tmRemaining < 0)
 		tmRemaining = 0;
+
+	return;
 
 	MESSAGE_BEGIN(MSG_ONE, gmsgRoundTime, NULL, pev);
 		WRITE_SHORT((int)tmRemaining);
@@ -3584,7 +3592,7 @@ void CBasePlayer::PlayerDeathThink()
 		if (fAnyButtonDown)
 			return;
 
-		if (g_pGameRules->FPlayerCanRespawn(this))
+		if (1)
 		{
 			pev->deadflag = DEAD_RESPAWNABLE;
 
@@ -6620,10 +6628,10 @@ void CBasePlayer::UpdateClientData()
 
 		FireTargets("game_playerspawn", this, this, USE_TOGGLE, 0);
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgMoney, NULL, pev);
+		/*MESSAGE_BEGIN(MSG_ONE, gmsgMoney, NULL, pev);
 			WRITE_LONG(m_iAccount);
 			WRITE_BYTE(0);
-		MESSAGE_END();
+		MESSAGE_END();*/
 
 		if (m_bHasDefuser)
 		{
@@ -6699,6 +6707,10 @@ void CBasePlayer::UpdateClientData()
 		// send "health" update message
 		MESSAGE_BEGIN(MSG_ONE, gmsgHealth, NULL, pev);
 			WRITE_BYTE(iHealth);
+		MESSAGE_END();
+		MESSAGE_BEGIN(MSG_ONE, gmsgMoney, NULL, pev);
+				WRITE_LONG(iHealth);
+				WRITE_BYTE(0);
 		MESSAGE_END();
 
 		m_iClientHealth = (int)pev->health;

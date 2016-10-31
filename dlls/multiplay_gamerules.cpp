@@ -328,13 +328,13 @@ void EndRoundMessage(const char *sentence, int event)
 
 void ReadMultiplayCvars(CHalfLifeMultiplay *mp)
 {
-	mp->m_iRoundTime = (int)(CVAR_GET_FLOAT("mp_roundtime") * 60);
+	mp->m_iRoundTime = 100500; //(int)(CVAR_GET_FLOAT("mp_roundtime") * 60);
 	mp->m_iC4Timer = (int)CVAR_GET_FLOAT("mp_c4timer");
 	mp->m_iIntroRoundTime = (int)CVAR_GET_FLOAT("mp_freezetime");
 	mp->m_iLimitTeams = (int)CVAR_GET_FLOAT("mp_limitteams");
 
 
-	if (mp->m_iRoundTime > 540)
+	/*if (mp->m_iRoundTime > 540)
 	{
 		CVAR_SET_FLOAT("mp_roundtime", 9);
 		mp->m_iRoundTime = 540;
@@ -376,7 +376,7 @@ void ReadMultiplayCvars(CHalfLifeMultiplay *mp)
 	{
 		CVAR_SET_FLOAT("mp_limitteams", 0);
 		mp->m_iLimitTeams = 0;
-	}
+	}*/
 }
 
 CHalfLifeMultiplay::CHalfLifeMultiplay()
@@ -776,12 +776,12 @@ void CHalfLifeMultiplay::GiveC4()
 		if (++iTemp == m_iC4Guy)
 		{
 			player->m_bHasC4 = true;
-			player->GiveNamedItem("weapon_c4");
-			player->SetBombIcon();
-			player->pev->body = 1;
+			//player->GiveNamedItem("weapon_c4");
+			//player->SetBombIcon();
+			//player->pev->body = 1;
 
 			player->m_flDisplayHistory |= DHF_BOMB_RETRIEVED;
-			player->HintMessage("#Hint_you_have_the_bomb", FALSE, TRUE);
+			//player->HintMessage("#Hint_you_have_the_bomb", FALSE, TRUE);
 
 			// Log this information
 			UTIL_LogPrintf("\"%s<%i><%s><TERRORIST>\" triggered \"Spawned_With_The_Bomb\"\n", STRING(player->pev->netname), GETPLAYERUSERID(player->edict()), GETPLAYERAUTHID(player->edict()));
@@ -812,12 +812,12 @@ void CHalfLifeMultiplay::GiveC4()
 				continue;
 
 			player->m_bHasC4 = true;
-			player->GiveNamedItem("weapon_c4");
-			player->SetBombIcon(FALSE);
-			player->pev->body = 1;
+//			player->GiveNamedItem("weapon_c4");
+//			player->SetBombIcon(FALSE);
+//			player->pev->body = 1;
 
 			player->m_flDisplayHistory |= DHF_BOMB_RETRIEVED;
-			player->HintMessage("#Hint_you_have_the_bomb", FALSE, TRUE);
+//			player->HintMessage("#Hint_you_have_the_bomb", FALSE, TRUE);
 
 			// Log this information
 			UTIL_LogPrintf("\"%s<%i><%s><TERRORIST>\" triggered \"Spawned_With_The_Bomb\"\n", STRING(player->pev->netname), GETPLAYERUSERID(player->edict()), GETPLAYERAUTHID(player->edict()));
@@ -829,6 +829,7 @@ void CHalfLifeMultiplay::GiveC4()
 
 void CHalfLifeMultiplay::TerminateRound(float tmDelay, int iWinStatus)
 {
+	return;
 	m_iRoundWinStatus = iWinStatus;
 	m_fTeamCount = gpGlobals->time + tmDelay;
 	m_bRoundTerminating = true;
@@ -1642,8 +1643,8 @@ void CHalfLifeMultiplay::RestartRound()
 		MESSAGE_BEGIN(MSG_ALL, gmsgBombPickup);
 		MESSAGE_END();
 
-		MESSAGE_BEGIN(MSG_ALL, gmsgShowTimer);
-		MESSAGE_END();
+//		MESSAGE_BEGIN(MSG_ALL, gmsgShowTimer);
+//		MESSAGE_END();
 	}
 
 	m_bBombDropped = FALSE;
