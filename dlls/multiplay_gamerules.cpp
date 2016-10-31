@@ -1960,12 +1960,9 @@ void CHalfLifeMultiplay::RestartRound()
 		if (player->m_iTeam != UNASSIGNED && player->m_iTeam != SPECTATOR)
 		{
 			// drop the c4 if the player is carrying it
-			if (player->m_bHasC4)
-			{
-				player->DropPlayerItem("weapon_c4");
-			}
-
 			player->RoundRespawn();
+			player->SetMaxStats();
+			player->GiveDefaultItems();
 		}
 
 		// Gooseman : The following code fixes the HUD icon bug
@@ -3431,6 +3428,7 @@ void CHalfLifeMultiplay::PlayerSpawn(CBasePlayer *pPlayer)
 	if (addDefault || pPlayer->m_bIsVIP)
 	{
 		pPlayer->GiveDefaultItems();
+		pPlayer->SetMaxStats();
 	}
 
 	pPlayer->SetPlayerModel(false);

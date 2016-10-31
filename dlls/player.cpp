@@ -1401,6 +1401,8 @@ void packPlayerItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, bool packAmmo)
 	}
 }
 
+
+
 void CBasePlayer::PackDeadPlayerItems()
 {
 	bool bPackGun = (g_pGameRules->DeadPlayerWeapons(this) != GR_PLR_DROP_GUN_NO);
@@ -1453,22 +1455,87 @@ void CBasePlayer::GiveDefaultItems()
 	RemoveAllItems(FALSE);
 	m_bHasPrimary = false;
 
-	switch (m_iTeam)
+	switch (m_iClass)
 	{
-	case CT:
+	case CLASS_RHINO:
 		GiveNamedItem("weapon_knife");
-		GiveNamedItem("weapon_usp");
-		GiveAmmo(m_bIsVIP ? 12 : 24, "45acp", MAX_AMMO_45ACP);
-
+		GiveNamedItem("weapon_deagle");
+		GiveNamedItem("ammo_50ae");
+		GiveNamedItem("ammo_50ae");
+		GiveNamedItem("ammo_50ae");
+		GiveNamedItem("ammo_50ae");
+		GiveNamedItem("ammo_50ae");
 		break;
-	case TERRORIST:
-		GiveNamedItem("weapon_knife");
-		GiveNamedItem("weapon_glock18");
-		GiveAmmo(40, "9mm", MAX_AMMO_9MM);
-
+	case CLASS_COMMANDER:
+		GiveNamedItem("weapon_m249");
+		GiveNamedItem("ammo_556natobox");
+		GiveNamedItem("ammo_556natobox");
+		GiveNamedItem("ammo_556natobox");
+		break;
+	case CLASS_DESTROYER:
+		GiveNamedItem("weapon_m3");
+		GiveNamedItem("ammo_buckshot");
+		GiveNamedItem("ammo_buckshot");
+		GiveNamedItem("ammo_buckshot");
+		GiveNamedItem("ammo_buckshot");
+		GiveNamedItem("ammo_buckshot");
+		break;
+	case CLASS_VAMPIRE:
+		GiveNamedItem("weapon_scout");
+		GiveNamedItem("ammo_762nato");
+		GiveNamedItem("ammo_762nato");
+		GiveNamedItem("ammo_762nato");
 		break;
 	}
 }
+
+void CBasePlayer::SetMaxStats()
+{
+	switch(m_iClass)
+	{
+	case CLASS_RHINO:
+		pev->health = 400;
+		pev->armorvalue = 200;
+		pev->maxspeed = 200;
+		break;
+	case CLASS_COMMANDER:
+		pev->health = 100;
+		pev->armorvalue = 100;
+		pev->maxspeed = 250;
+		break;
+	case CLASS_DESTROYER:
+		pev->health = 80;
+		pev->armorvalue = 90;
+		pev->maxspeed = 400;
+		break;
+	case CLASS_VAMPIRE:
+		pev->health = 50;
+		pev->health = 70;
+		pev->maxspeed = 330;
+		break;
+	}
+}
+
+
+void CBasePlayer::SetMaxSpeed()
+{
+	switch(m_iClass)
+	{
+	case CLASS_RHINO:
+		pev->maxspeed = 200;
+		break;
+	case CLASS_COMMANDER:
+		pev->maxspeed = 250;
+		break;
+	case CLASS_DESTROYER:
+		pev->maxspeed = 400;
+		break;
+	case CLASS_VAMPIRE:
+		pev->maxspeed = 330;
+		break;
+	}
+}
+
 
 void CBasePlayer::RemoveAllItems(BOOL removeSuit)
 {
@@ -3256,10 +3323,6 @@ void CBasePlayer::JoiningThink()
 
 				mp->CheckWinConditions();
 
-				if (!mp->m_fTeamCount && mp->m_bMapHasBombTarget && !mp->IsThereABomber() && !mp->IsThereABomb())
-				{
-					mp->GiveC4();
-				}
 				if (m_iTeam == TERRORIST)
 				{
 					mp->m_iNumEscapers++;
@@ -3446,7 +3509,7 @@ void CBasePlayer::PlayerDeathThink()
 			pev->velocity = flForward * pev->velocity.Normalize();
 	}
 
-	if (HasWeapons())
+	/*if (HasWeapons())
 	{
 		// we drop the guns here because weapons that have an area effect and can kill their user
 		// will sometimes crash coming back from CBasePlayer::Killed() if they kill their owner because the
@@ -3454,7 +3517,7 @@ void CBasePlayer::PlayerDeathThink()
 		// we aren't calling into any of their code anymore through the player pointer.
 		PackDeadPlayerItems();
 	}
-
+    */
 	if (pev->modelindex && !m_fSequenceFinished && pev->deadflag == DEAD_DYING)
 	{
 		StudioFrameAdvance();
@@ -5311,6 +5374,7 @@ void CBasePlayer::Spawn()
 		m_flLastCommandTime[i] = -1;
 }
 
+
 void CBasePlayer::Precache()
 {
 	// in the event that the player JUST spawned, and the level node graph
@@ -6439,6 +6503,7 @@ void CBasePlayer::SendHostageIcons()
 	}
 }
 
+
 void CBasePlayer::SendWeatherInfo()
 {
 	CBaseEntity *pPoint = UTIL_FindEntityByClassname(NULL, "env_rain");
@@ -6837,12 +6902,13 @@ void CBasePlayer::EnableControl(BOOL fControl)
 
 void CBasePlayer::ResetMaxSpeed()
 {
+	CBasePlayer *pPlayer;
 	float speed;
 
 	if (IsObserver())
 	{
 		// Player gets speed bonus in observer mode
-		speed = 900;
+		pev->maxspeed = 1200;
 	}
 	else if (g_pGameRules->IsMultiplayer() && g_pGameRules->IsFreezePeriod())
 	{
@@ -6859,13 +6925,6 @@ void CBasePlayer::ResetMaxSpeed()
 		// Get player speed from selected weapon
 		speed = m_pActiveItem->GetMaxSpeed();
 	}
-	else
-	{
-		// No active item, set the player's speed to default
-		speed = 240;
-	}
-
-	pev->maxspeed = speed;
 }
 
 bool CBasePlayer::HintMessage(const char *pMessage, BOOL bDisplayIfPlayerDead, BOOL bOverride)

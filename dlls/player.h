@@ -55,6 +55,11 @@
 #define ARMOR_RATIO			0.5 // Armor Takes 50% of the damage
 #define ARMOR_BONUS			0.5 // Each Point of Armor is work 1/x points of health
 
+#define CLASS_RHINO 1
+#define CLASS_COMMANDER 2
+#define CLASS_DESTROYER 3
+#define CLASS_VAMPIRE 4
+
 #define FLASH_DRAIN_TIME		1.2 // 100 units/3 minutes
 #define FLASH_CHARGE_TIME		0.2 // 100 units/20 seconds  (seconds per unit)
 
@@ -391,6 +396,8 @@ public:
 	void SetBombIcon(BOOL bFlash = FALSE);
 	void SetProgressBarTime(int time);
 	void SetProgressBarTime2(int time, float timeElapsed);
+	void SetMaxSpeed();
+	void SetMaxStats();
 	void SetPlayerModel(BOOL HasC4);
 	void SetNewPlayerModel(const char *modelName);
 	BOOL SwitchWeapon(CBasePlayerItem *pWeapon);
@@ -544,6 +551,8 @@ public:
 	int m_iLastZoom;
 	bool m_bResumeZoom;
 	float m_flEjectBrass;
+	int m_iClass;
+	int m_iClassSpeed;
 	int m_iKevlar;
 	bool m_bNotKilled;
 	TeamName m_iTeam;
