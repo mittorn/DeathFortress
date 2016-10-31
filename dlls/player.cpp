@@ -374,7 +374,9 @@ void CBasePlayer::SetPlayerModel(BOOL HasC4)
 	char *infobuffer = GET_INFO_BUFFER(edict());
 	char *model;
 
-	if (m_iTeam == CT)
+	//return;
+
+	/*if (m_iTeam == CT)
 	{
 		switch (m_iModelName)
 		{
@@ -452,12 +454,31 @@ void CBasePlayer::SetPlayerModel(BOOL HasC4)
 		}
 	}
 	else
-		model = "urban";
+		model = "urban";*/
+    switch(m_iClass)
+    {
+        default:return;
+    case CLASS_RHINO:
+        model = "rhino";
+        break;
+    case CLASS_COMMANDER:
+        model = "commander";
+        break;
+    case CLASS_DESTROYER:
+        model = "destroyer";
+        break;
+    case CLASS_VAMPIRE:
+        model = "vampire";
+        break;
+    }
 
-	if (Q_strcmp(GET_KEY_VALUE(infobuffer, "model"), model))
+    if (Q_strcmp(GET_KEY_VALUE(infobuffer, "model"), model ))
 	{
-		SET_CLIENT_KEY_VALUE(entindex(), infobuffer, "model", model);
-	}
+		SET_CLIENT_KEY_VALUE(entindex(), infobuffer, "model", "rhino");
+    }
+    static char szModelPath[64];
+    sprintf(szModelPath, "models/player/%s/%s.mdl", model, model);
+    SET_MODEL(ENT(pev), szModelPath);
 }
 
 CBasePlayer *CBasePlayer::GetNextRadioRecipient(CBasePlayer *pStartPlayer)
@@ -7374,7 +7395,7 @@ void CBasePlayer::SwitchTeam()
 
 	oldTeam = m_iTeam;
 
-	if (m_iTeam == CT)
+	/*if (m_iTeam == CT)
 	{
 		m_iTeam = TERRORIST;
 
@@ -7444,7 +7465,7 @@ void CBasePlayer::SwitchTeam()
 			}
 			break;
 		}
-	}
+	}*/
 
 	MESSAGE_BEGIN(MSG_ALL, gmsgTeamInfo);
 		WRITE_BYTE(entindex());

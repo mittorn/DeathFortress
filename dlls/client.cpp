@@ -942,22 +942,22 @@ void HandleMenu_ChooseAppearance(CBasePlayer *player, int slot)
 		case 1:
 			appearance.model_id = MODEL_TERROR;
 			player->m_iClass = CLASS_RHINO;
-			appearance.model_name = "terror";
+			appearance.model_name = "rhino";
 			break;
 		case 2:
 			appearance.model_id = MODEL_LEET;
 			player->m_iClass = CLASS_COMMANDER;
-			appearance.model_name = "leet";
+			appearance.model_name = "commander";
 			break;
 		case 3:
 			appearance.model_id = MODEL_ARCTIC;
 			player->m_iClass = CLASS_DESTROYER;
-			appearance.model_name = "arctic";
+			appearance.model_name = "destroyer";
 			break;
 		case 4:
 			appearance.model_id = MODEL_GUERILLA;
 			player->m_iClass = CLASS_VAMPIRE;
-			appearance.model_name = "guerilla";
+			appearance.model_name = "vampire";
 			break;
 		default:
 			if (TheBotProfiles->GetCustomSkinModelname(slot) && player->IsBot())
